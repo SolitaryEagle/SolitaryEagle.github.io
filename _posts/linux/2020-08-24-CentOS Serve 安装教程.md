@@ -17,7 +17,7 @@ tags:       Linux CentOS
 * 设置 root 密码
 ##### 初始化配置
 * 修改 yum repos 为 阿里云镜像
-```shell script
+```shell
 # 备份
 yum install -y wget curl
 mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup

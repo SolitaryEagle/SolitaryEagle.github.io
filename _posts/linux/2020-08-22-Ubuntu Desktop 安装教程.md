@@ -237,7 +237,7 @@ tags:       Linux Ubuntu
         - 快速文档实时翻译
 * 安装 Jekyll，本地 Blog 测试
   * [Jekyll on Ubuntu](https://jekyllrb.com/docs/installation/ubuntu/)
-    ```shell script
+    ```shell
     sudo apt install -y ruby-full build-essential zlib1g-dev
     mkdir -p ~/application/gems/
     echo 'export GEM_HOME="$HOME/application/gems"' >> ~/.bashrc
