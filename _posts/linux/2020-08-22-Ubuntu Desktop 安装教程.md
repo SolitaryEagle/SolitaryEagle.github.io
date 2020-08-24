@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      Ubuntu Desktop 安装后要做的事
+title:      Ubuntu Desktop 安装教程
 subtitle:   Ubuntu Desktop 初始化
 date:       2020-08-22
 author:     Eagle Cool
@@ -28,42 +28,34 @@ tags:       Linux Ubuntu
   sudo apt-get update
   sudo apt-get install -y typora
   ```
-
 * 安装 chrome 浏览器
   * wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   * sudo dpkg -i 包名
-
 * [使用 ibus 中文输入法](https://blog.csdn.net/ZhangRelay/article/details/105891175)
 * 设置 root 密码
   ```shell
   sudo passwd root
   ```
-
 * 添加环境变量 PATH:
   ```shell
   echo "export PATH=/home/eagle/application/bin:\$PATH" >> ~/.bashrc 
   source ~/.bashrc 
   ```
-
 # 开发环境配置
-
 * 在 home 目录下创建如下结构的文件目录
   * idea-workspace : idea 的工作目录
     * workspace-eagle: 存放个人项目
     * workspace-work: 存放工作项目
     * workspace-test: 存放测试项目 
     * workspace-view: 存放所有工作项目, 用于全局查看和搜索
-
 * 安装 openjdk 8
   ```shell
   sudo apt install -y openjdk-8-jdk openjdk-8-source 
   ```
-
 * 安装 maven
   ```shell
   sudo apt install -y maven
   ```
-
   * 新建 ~/.m2/settings.xml 文件, 并做如下配置: > ~/.m2/settings.xml
     ```xml
     <?xml version="1.0" encoding="UTF-8"?>
@@ -96,7 +88,6 @@ tags:       Linux Ubuntu
       </activeProfiles>
     </settings>
     ```
-
 * 安装 git
   ```shell
   sudo apt install -y git
@@ -121,7 +112,6 @@ tags:       Linux Ubuntu
     EOF
     chmod 777 git-push
     ```
-
 * 安装 postman
   * wget https://dl.pstmn.io/download/latest/linux64  -->  https://www.postman.com/downloads/ 下载安装包, tar.gz
   * 解压到 ~/application/Postman
@@ -137,7 +127,6 @@ tags:       Linux Ubuntu
     Type=Application
     EOF
     ```
-
 * 安装 idea
   * 下载安装包: https://www.jetbrains.com/idea/download/#section=linux
   * 解压到 ~/application/idea-${version}/idea-work; ~/application/idea-${version}/idea-test; ~/application/idea-${version}/idea-view
@@ -148,7 +137,6 @@ tags:       Linux Ubuntu
     -XX:ReservedCodeCacheSize=512m
     -XX:+UseG1GC
     ```
-
   * 修改 idea.properties
     ```properties
     idea.config.share.path=${user.home}/.idea-2020.1.4
@@ -160,7 +148,6 @@ tags:       Linux Ubuntu
      
     idea.max.intellisense.filesize=51200
     ```
-
   * 在 ~/.local/share/applications/ 下创建 2020.1.4-work.desktop
     ```
     # work.desktop
@@ -185,7 +172,6 @@ tags:       Linux Ubuntu
     StartupWMClass=2020.1.4-test
     EOF
     ```
-
   * 安装插件
     * .ignore
     * Alibaba Java Coding Guidelines
@@ -199,7 +185,6 @@ tags:       Linux Ubuntu
     * Translation
     * CheckStyle
     * MybatisPlus
-
   * setting 设置
     * appearance & Behavior
       - Appearance 
@@ -211,7 +196,6 @@ tags:       Linux Ubuntu
       - System Settings
         - confirm before exiting the IDE
         - reopen projects on startup
-
     * Editor
       - General
         - Auto import
@@ -251,3 +235,17 @@ tags:       Linux Ubuntu
       * translation
         - 使用 transla.google.com
         - 快速文档实时翻译
+* 安装 Jekyll，本地 Blog 测试
+  * [Jekyll on Ubuntu](https://jekyllrb.com/docs/installation/ubuntu/)
+    ```shell script
+    sudo apt install -y ruby-full build-essential zlib1g-dev
+    mkdir -p ~/application/gems/
+    echo 'export GEM_HOME="$HOME/application/gems"' >> ~/.bashrc
+    echo 'export PATH="$HOME/application/gems/bin:$PATH"' >> ~/.bashrc
+    source ~/.bashrc
+    gem install jekyll bundler
+    
+    # 将 Ruby Gems 镜像 修改为 阿里云镜像
+    gem sources --remove https://rubygems.org/
+    gem sources -a https://mirrors.aliyun.com/rubygems/
+    ```
