@@ -2,7 +2,7 @@
 layout:     post
 title:      Ubuntu 安装 Nvidia 驱动
 subtitle:   Nvidia 驱动
-date:       2020-08-22
+date:       2020-08-29
 author:     Eagle Cool
 header-img: img/post-bg-ios9-web.jpg
 catalog: 	true
