@@ -209,12 +209,12 @@ tags:       Linux Ubuntu
         - java 导入 [intellij-java-google-style.xml](/download/intellij-java-google-style.xml)
       - file and code templates
         - includes file header
-          ```
-          /**
-           * @author 覃国强
-           * @date ${YEAR}-${MONTH}-${DAY} ${HOUR}:${MINUTE}
-           */
-          ```
+        ```
+        /**
+         *@author 覃国强
+         *@date ${YEAR}-${MONTH}-${DAY} ${HOUR}:${MINUTE}
+         */
+        ```
         - file encodings : utf-8, transparent native-to-ascii
     * Build, Execution, Deployment
       * build tools : any changes
