@@ -111,7 +111,263 @@ spring.config.location + spring.config.additional-location 逆序排列就是文
 * 将 . 替换为 _
 * 删除 -
 * 转为全大写
-#### 合并复杂类型
+#### 合并复合类型
+多处配置 List 或 Map 类型的属性，只有优先级最高的一处生效，不会合并属性。
+#### 属性转换
+* ConversionService
+* CustomEditorConfigurer
+* Converters and @ConfigurationPropertiesBinding
+##### 转换 Duration
+* 一个正常的 long，代表 milliseconds 或使用 @DurationUnit 指定
+* [使用 Duration 格式化一个标准的 ISO-8601](https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html#parse-java.lang.CharSequence-)
+* 一种可读性更强的格式，其中值和单位耦合在一起（例如 10s 表示10秒）
+    * `ns` for nanoseconds
+    * `us` for microseconds
+    * `ms` for milliseconds
+    * `s` for seconds
+    * `m` for minutes
+    * `h` for hours
+    * `d` for days
+##### 转换 Period 
+* 一个正常的 int，代表 days 或使用 @DurationUnit 指定
+* [使用 Period 格式化一个标准的 ISO-8601](https://docs.oracle.com/javase/8/docs/api/java/time/Period.html#parse-java.lang.CharSequence-)
+* 一种可读性更强的格式，其中值和单位耦合在一起（例如 1y3d 表示 1 年和 3 天）
+    * `y` for years
+    * `m` for months
+    * `w` for weeks
+    * `d` for days
+##### 转换 DataSize
+* 一个正常的 long，代表 字节 或使用 @DataSizeUnit 指定
+* 一种可读性更强的格式，其中值和单位耦合在一起（例如 10MB 表示 10 兆字节）
+    * `B` for bytes
+    * `KB` for kilobytes
+    * `MB` for megabytes
+    * `GB` for gigabytes
+    * `TB` for terabytes
+#### @ConfigurationProperties 校验
+使用 @Validated 注解 @ConfigurationProperties 注解过的类，会产生 javax.validation 校验
+
+spring-boot-actuator 会暴露所有的 @ConfigurationProperties beans 在 /actuator/configprops
+
+下面这段话如何理解？
+
+The configuration properties validator is created very early 
+in the application’s lifecycle, and declaring the @Bean method as static 
+lets the bean be created without having to instantiate the @Configuration class. 
+Doing so avoids any problems that may be caused by early instantiation.
+#### @ConfigurationProperties vs @Value
+
+Feature | @ConfigurationProperties | @Value
+------- | ------------------------ | -------
+Relaxed binding | Yes | Limited
+Meta-data support | Yes | No
+SpEL 表达式 | No | Yes
+
+## Profile
+
+### 添加 Active Profiles
+
+当在多个属性源中添加 spring.profiles.active 时，会使用高优先级的属性源中的值，并不会合并它们的值。
+
+使用 spring.profiles.include 表示添加 profile 到 spring.profiles.active 中。
+**但是多个属性源中的 spring.profiles.include 会不会合并呢？**
+
+### 以编程的方式设置 Profiles
+
+* `SpringApplication.setAdditionalProfiles(...)`
+* `ConfigurableEnvironment`
+
+### 特定于 Profile 的配置文件
+
+## 日志
+
+### 日志格式化
+
+* Date and Time：毫秒精度和容易排序。
+* Log Level：ERROR, WARN, INFO, DEBUG, or TRACE。
+* Process ID。
+* `---` 分隔线：用以区分真实的日志信息。
+* Thread name：使用中括号包装，在console上输出时可能会缩减。
+* Logger name：通常是 source class name，经常缩写
+* The log message。
+
+### Console 输出
+
+#### 颜色编码输出
+
+### 文件输出
+
+### Logback 扩展
+
+必须使用 logback-spring.xml 或 logging.config
+
+#### 特定于 Profile 的配置
+
+* `<springProfile>`
+
+```xml
+<springProfile name="staging">
+    <!-- configuration to be enabled when the "staging" profile is active -->
+</springProfile>
+
+<springProfile name="dev | staging">
+    <!-- configuration to be enabled when the "dev" or "staging" profiles are active -->
+</springProfile>
+
+<springProfile name="!production">
+    <!-- configuration to be enabled when the "production" profile is not active -->
+</springProfile>
+```
+
+#### Environment 属性
+
+* `<springProperty>`
+
+## 国际化
+
+## JSON
+
+### Jackson
+
+## 开发 Web 应用程序
+
+### The “Spring Web MVC Framework”
+
+#### Spring MVC 自动配置
+
+* ContentNegotiatingViewResolver 和 BeanNameViewResolver beans
+* 支持服务静态资源，包括 WebJars
+* 自动注册 Converter，GenericConverter 和 Formatter
+* 支持 HttpMessageConverters
+* 自动注册 MessageCodesResolver
+* 支持静态的 index.html
+* 支持自定义 Favicon
+* 自动使用 ConfigurableWebBindingInitializer bean
+
+如果你想保持 Spring Boot MVC 配置并且添加自己的 MVC 配置(interceptors, formatters, view controllers, and other features)，
+你需要添加一个 @Configuration 注解的 WebMvcConfigurer 的子类，**但是不要使用 @EnableWebMvc**。
+
+如果你想保持 Spring Boot MVC 配置并且添加自己的 RequestMappingHandlerMapping，RequestMappingHandlerAdapter，
+ExceptionHandlerExceptionResolver；你需要声明一个 WebMvcRegistrations bean，并使用它去提供上述实例。
+
+如果你想完全控制 Spring MVC，你需要使用 @EnableWebMvc 注解。
+
+#### HttpMessageConverters
+
+使用 Spring Boot’s HttpMessageConverters 去添加 Spring MVC‘s HttpMessageConverter。
+
+#### 自定义 Json 序列化 和 反序列化
+
+* 使用 Jackson 的 module 模型
+* 使用 Spring Boot 的 @JsonComponent
+
+#### MessageCodesResolver
+
+http 错误码解析器
+
+#### 静态内容
+
+默认情况下，Spring Boot 通过下列文件夹提供静态内容（类路径下或 ServletContext 根路径）：
+* /static
+* /public
+* /resources
+* /META-INF/resources
+
+#### 欢迎页
+
+* index.html
+* index template
+
+#### 自定义 Favicon
+
+在静态内容中寻找 favicon.ico
+
+#### 路径匹配与内容协商
+
+HTTP 客户端使用 `"Accept"` 请求头进行内容协商。
+
+Spring Boot 默认禁用后缀名匹配，即 `"GET /projects/spring-boot.json"` 不匹配 
+`@GetMapping("/projects/spring-boot")`。
+
+当 HTTP 客户端没有使用 `"Accept"` 请求头进行内容协商时，可以使用查询参数代替。
+`"GET /projects/spring-boot?format=json"` 匹配 `@GetMapping("/projects/spring-boot")`。
+
+#### ConfigurableWebBindingInitializer
+
+Spring MVC 使用 WebBindingInitializer 去初始化 WebDataBinder。如果你创建自己的
+ConfigurableWebBindingInitializer bean，Spring Boot 自动配置它给 Spring MVC。
+
+##### 模板引擎
+
+#### 错误处理
+
+### 支持嵌入式 Servlet 容器
+
+#### Servlets, Filters, and listeners
+
+##### 使用 Spring Beans 注册 Servlets, Filters, and Listeners 
+
+* ServletRegistrationBean
+* FilterRegistrationBean
+* ServletListenerRegistrationBean
+
+##### Servlet Context 初始化
+
+嵌入式 Servlet 容器不直接执行 `javax.servlet.ServletContainerInitializer` 或
+`org.springframework.web.WebApplicationInitializer`。这是一个有意的设计决策，
+目的是降低在 war 中运行的第三方库可能破坏 Spring Boot 应用程序的风险。
+
+如果你想执行 Servlet Context 初始化，你应该注册一个 `org.springframework.boot.web.servlet.ServletContextInitializer`.
+它提供一个 onStartup 方法去访问 ServletContext，这可以简单的作为已经存在的 WebApplicationInitializer 的适配器。
+
+#### 扫描 Servlets, Filters, and listeners
+
+* @WebServlet
+* @WebFilter
+* @WebListener
+* @ServletComponentScan
+
+#### ServletWebServerApplicationContext
+
+#### 自定义嵌入式 Servlet 容器
+
+##### 编程式自定义
+
+##### 直接自定义 ConfigurableServletWebServerFactory
+
+## 优雅关机
+
+## 使用 SQL Databases
+
+### 配置一个 DataSource
+
+#### 嵌入式 DataSource 支持
+
+#### 连接线上 Database
+
+DataSource 连接池的选择策略：
+* HikariCP
+* Tomcat DataSource 连接池
+* Commons DBCP2 
+
+#### 连接 JNDI DataSource
+
+### 使用 JdbcTemplate
+
+### JPA and Spring Data JPA
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
