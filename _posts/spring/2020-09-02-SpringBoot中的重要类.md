@@ -35,10 +35,19 @@ tags:       Spring
 * CommandLinePropertySource
 * SimpleCommandLineArgsParser
 * PropertySourcesPropertyResolver
+* PropertySourcesPlaceholdersResolver
+* PropertySourcesPlaceholderConfigurer
 * PropertyPlaceholderHelper
 * ConfigurableEnvironment
 * ConfigurableWebEnvironment
 * ConfigurablePropertyResolver
+* PropertySourceLoader
+* OriginTrackedYamlLoader
+* Binder
+* ConfigurationPropertySource
+* PropertyMapper
+* ConfigurationProperty
+* ConfigurationPropertyName
 
 
 * ApplicationConversionService
@@ -47,4 +56,30 @@ tags:       Spring
 * ConvertiblePair
 
 
+* EnvironmentPostProcessor
 
+
+* JsonParserFactory
+* JsonParser
+
+
+* ParameterNameDiscoverer
+
+
+* RootBeanDefinition
+* AnnotationTypeFilter
+
+# 待做
+
+SpringApplication.setDefaultProperties();
+applyActiveProfiles(defaultProperties);
+
+Spring 属性绑定 vs SpringBoot 属性绑定
+
+org.springframework.boot.SpringApplication#lazyInitialization 设置为 true 的效果
+
+
+# 经验
+
+* 在比 application.yml 优先级更高的属性源中设置 spring.profiles.active
+* 不要在 application-{profile}.yml 中设置 spring.profiles.active
