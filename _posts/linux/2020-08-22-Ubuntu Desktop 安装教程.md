@@ -21,6 +21,7 @@ tags:       Linux Ubuntu
     open-vm-tools # 虚拟机窗口适配
   ```
 * 更新语言包
+* 安装 kolourpaint4：sudo apt install kolourpaint4
 * 安装 Typora
   ```shell
   wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
