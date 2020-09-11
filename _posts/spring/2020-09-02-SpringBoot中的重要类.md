@@ -56,7 +56,13 @@ tags:       Spring
 * ConvertiblePair
 
 
-* EnvironmentPostProcessor
+* ApplicationContext
+* BeanFactoryPostProcessor
+* BeanPostProcessor
+* BeanWrapperImpl
+* Converter
+
+* EnvironmentPostProcessor 
 
 
 * JsonParserFactory
@@ -78,6 +84,13 @@ Spring 属性绑定 vs SpringBoot 属性绑定
 
 org.springframework.boot.SpringApplication#lazyInitialization 设置为 true 的效果
 
+TaskScheduler vs TaskExecutor
+
+如果在两个 Configuration 类中存在 methodName 一样的 @Bean method, 会怎么样呢？
+
+SpringBoot web 如何添加 ServerContext 初始化参数
+
+Spring Framework 发布事件的顺序，及监听器的执行情况
 
 # 经验
 
