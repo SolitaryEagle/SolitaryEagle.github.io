@@ -92,6 +92,8 @@ SpringBoot web 如何添加 ServerContext 初始化参数
 
 Spring Framework 发布事件的顺序，及监听器的执行情况
 
+集合 Bean 在 Spring 中是如何管理的
+
 # 经验
 
 * 在比 application.yml 优先级更高的属性源中设置 spring.profiles.active
