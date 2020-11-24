@@ -115,5 +115,35 @@ public class ReorderTest {
 * 状态标记变量（可见性，禁止重排序）
 * 懒汉式单例模式的 Double Check（禁止 new 指令重排序）
 
+------------------------------------
+
+> https://blog.csdn.net/tongdanping/article/details/79647337
+
+# synchronized
+
+约定:
+* 监听器对象: synchronized 修饰的对象 --> mutex
+
+
+
+锁升级（偏向锁 --> 轻量级锁 --> 重量级锁）
+
+32位虚拟机中的 MarkWord:
+
+![DUe5ZQ.jpg](https://s3.ax1x.com/2020/11/24/DUe5ZQ.jpg)
+
+64位虚拟机中的 MarkWord:
+
+![DUmPRx.jpg](https://s3.ax1x.com/2020/11/24/DUmPRx.jpg)
+
+* 偏向锁: MarkWord 中会记录偏向线程的 Id
+    * mutex 必须没有计算过 hashCode
+    * mutex 没有偏向过，或（偏向的线程是自己或已经死亡）
+* 轻量级锁: 线程首先在栈内存中分配一个 LockRecord 用来保存 MarkWord 中原来的值，并在 MarkWord 中记录 LockRecord 的指针；释放锁时，会把原来的 MarkWord 复制回去
+    * 多个线程对共享内存只存在交替访问（并发）
+* 重量级锁: 操作系统实现
+    * 多个线程对共享内存存在同时访问（并行）
+
+![DUmaYn.jpg](https://s3.ax1x.com/2020/11/24/DUmaYn.jpg)
 
 
