@@ -22,36 +22,43 @@ Java 虚拟机规范中的定义
     * JVM 通过 CPU 的 MESI 协议来实现
 * volatile 变量的指令禁止重排序
     * JVM 通过“内存屏障”来实现
+    
     ![DYIQ8e.png](https://s3.ax1x.com/2020/11/23/DYIQ8e.png)
 
 
 volatile 变量的可见性证明
 ```
-class VolatileSafe {
-    // 当 bool 变量没有被 volatile 修饰时，线程 thread2 可能不会结束
-    volatile boolean bool;
-    public void setTrue2Bool() {
-        this.bool = true;
-    }
-    public void boolWork() {
-        while (true) {
-            if (bool) {
-                break;
+class NotVolatile {
+
+    final int MAX = 5;
+    // 当 initValue 变量没有被 volatile 修饰时，线程 thread1 可能不会结束
+    volatile int initValue = 0;
+
+    public void reader() {
+        int localValue = initValue;
+        while (localValue < MAX) {
+            if (initValue != localValue) {
+                System.out.println(Thread.currentThread().getName() + " --> initValue: " + initValue);
+                localValue = initValue;
             }
         }
     }
-}
 
-public class ThreadTest {
+    public void updater() {
+        int localValue = initValue;
+        while (localValue < MAX) {
+            System.out.println(Thread.currentThread().getName() + " --> localValue: " + ++localValue);
+            initValue = localValue;
+            sleep(2000);
+        }
+    }
+
     public static void main(String[] args) {
-        VolatileSafe safe = new VolatileSafe();
-        Thread thread1 = new Thread(safe::setTrue2Bool);
-        Thread thread2 = new Thread(safe::boolWork);
-    
-        // 保证 setTrue2Bool() 在 boolWork() 之后执行
-        thread2.start();
-        sleep(2000);
+        NotVolatile notVolatile = new NotVolatile();
+        Thread thread1 = new Thread(notVolatile::reader, "Reader");
+        Thread thread2 = new Thread(notVolatile::updater, "Updater");
         thread1.start();
+        thread2.start();
     }
 }
 ```
