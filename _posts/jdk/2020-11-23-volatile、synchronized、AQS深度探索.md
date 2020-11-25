@@ -124,6 +124,11 @@ public class ReorderTest {
 约定:
 * 监听器对象: synchronized 修饰的对象 --> mutex
 
+底层实现逻辑
+* java 代码: synchronized 关键字
+* jvm 字节码: monitorenter、monitorexit 指令
+* jvm 执行过程中: 锁升级（偏向锁 --> 轻量级锁 --> 重量级锁）
+* CPU 汇编指令: lock comxchg 指令
 
 
 锁升级（偏向锁 --> 轻量级锁 --> 重量级锁）
@@ -146,4 +151,4 @@ public class ReorderTest {
 
 ![DUmaYn.jpg](https://s3.ax1x.com/2020/11/24/DUmaYn.jpg)
 
-
+# AQS
