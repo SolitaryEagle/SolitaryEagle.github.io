@@ -140,37 +140,25 @@ tags:       Linux Ubuntu
     ```
   * 修改 idea.properties
     ```properties
-    idea.config.share.path=${user.home}/.idea-2020.1.4
-    idea.config.custom.path=${idea.config.share.path}/idea-work
+    idea.config.custom.path=${user.home}/.idea-2020.2.4/idea-work
     idea.config.path=${idea.config.custom.path}/config
     idea.system.path=${idea.config.custom.path}/system
-    idea.plugins.path=${idea.config.share.path}/plugins
     idea.log.path=${idea.system.path}/log
+    idea.plugins.path=${user.home}/.jetbrains/plugins
      
-    idea.max.intellisense.filesize=51200
+    idea.max.intellisense.filesize=512000
     ```
-  * 在 ~/.local/share/applications/ 下创建 2020.1.4-work.desktop
+  * 在 ~/.local/share/applications/ 下创建 2020.2.4-work.desktop
     ```
     # work.desktop
-    cat <<EOF >  ~/.local/share/applications/2020.1.4-work.desktop
+    cat <<EOF >  ~/.local/share/applications/2020.2.4-work.desktop
     [Desktop Entry]
-    Name=2020.1.4-work
-    Exec=/home/eagle/application/idea-2020.1.4/idea-work/bin/idea.sh
-    Icon=/home/eagle/application/idea-2020.1.4/idea-work/bin/idea.svg
+    Name=2020.2.4-work
+    Exec=/home/eagle/application/ideaIU-2020.2.4/idea-work/bin/idea.sh
+    Icon=/home/eagle/application/ideaIU-2020.2.4/idea-work/bin/idea.svg
     Terminal=false
     Type=Application
-    StartupWMClass=2020.1.4-work
-    EOF
-    
-    # test.desktop
-    cat <<EOF >  ~/.local/share/applications/2020.1.4-test.desktop
-    [Desktop Entry]
-    Name=2020.1.4-test
-    Exec=/home/eagle/application/idea-2020.1.4/idea-test/bin/idea.sh
-    Icon=/home/eagle/application/idea-2020.1.4/idea-test/bin/idea.svg
-    Terminal=false
-    Type=Application
-    StartupWMClass=2020.1.4-test
+    StartupWMClass=2020.2.4-work
     EOF
     ```
   * 安装插件
