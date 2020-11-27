@@ -129,15 +129,24 @@ tags:       Linux Ubuntu
     EOF
     ```
 * 安装 idea
+  * idea 的配置文件还有可能在 ~/.config/JetBrains/IntelliJIdea2020.2/ 目录下
   * 下载安装包: https://www.jetbrains.com/idea/download/#section=linux
   * 解压到 ~/application/idea-${version}/idea-work; ~/application/idea-${version}/idea-test; ~/application/idea-${version}/idea-view
   * 修改 idea64.vmoptions
-    ```
-    -Xms2g
-    -Xmx4g
-    -XX:ReservedCodeCacheSize=512m
-    -XX:+UseG1GC
-    ```
+    * idea-work
+        ```
+        -Xms2g
+        -Xmx4g
+        -XX:ReservedCodeCacheSize=512m
+        -XX:+UseG1GC
+        ```
+    * idea-test
+      ```
+      -Xms6g
+      -Xmx6g
+      -XX:ReservedCodeCacheSize=512m
+      -XX:+UseG1GC
+      ```
   * 修改 idea.properties
     ```properties
     idea.config.custom.path=${user.home}/.idea-2020.2.4/idea-work
