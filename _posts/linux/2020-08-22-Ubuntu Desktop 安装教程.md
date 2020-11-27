@@ -153,7 +153,7 @@ tags:       Linux Ubuntu
     idea.config.path=${idea.config.custom.path}/config
     idea.system.path=${idea.config.custom.path}/system
     idea.log.path=${idea.system.path}/log
-    idea.plugins.path=${user.home}/.jetbrains/plugins
+    idea.plugins.path=${user.home}/.idea-plugins/plugins
      
     idea.max.intellisense.filesize=512000
     ```
