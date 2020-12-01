@@ -152,3 +152,31 @@ public class ReorderTest {
 ![DUmaYn.jpg](https://s3.ax1x.com/2020/11/24/DUmaYn.jpg)
 
 # AQS
+
+数据结构
+
+* volatile int state: 同步器的状态值，用来记录同步器的重入次数
+* Thread exclusiveOwnerThread: 同步器的持有者线程
+* wait queue: 正在等待同步器的双端队列
+![DhbLef.png](https://s3.ax1x.com/2020/12/01/DhbLef.png)
+* condition queue: 正在等待唤醒的队列
+![DhqkwT.png](https://s3.ax1x.com/2020/12/01/DhqkwT.png)
+
+算法
+
+* Condition
+    * await: 将当前线程添加到 condition queue 尾部
+    * signal: 将 condition queue 头部的线程移动到 wait queue 的尾部
+
+* ReentrantLock: 当有多个线程在竞争时，将失败的线程加入 wait queue 中
+    * 公平与不公平的主要区别: 在竞争锁时是否先判断 wait queue 队列中是否有正在等待的线程
+        * 公平: 先判断
+        * 不公平: 不判断
+* ReadWriteLock
+    * 读锁: 当获取失败时，将当前线程添加到 wait queue 尾部，并标记为 SHARED
+    * 写锁: 当获取失败时，将当前线程添加到 wait queue 尾部，并标记为 EXCLUSIVE
+    * 公平与不公平的主要区别: 当竞争锁时对于是否阻塞不同
+        * 公平: 不论竞争什么锁，只要 wait queue 中有节点，都阻塞当前线程
+        * 不公平: 不阻塞获取写锁的线程；对于获取读锁的线程，先判断 wait queue 的头部是否是正在等待写锁的线程
+
+
