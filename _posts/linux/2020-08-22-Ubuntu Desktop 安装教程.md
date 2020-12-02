@@ -133,14 +133,14 @@ tags:       Linux Ubuntu
   * 下载安装包: https://www.jetbrains.com/idea/download/#section=linux
   * 解压到 ~/application/idea-${version}/idea-work; ~/application/idea-${version}/idea-test; ~/application/idea-${version}/idea-view
   * 修改 idea64.vmoptions
-    * idea-work
+    * idea-test
       ```
       -Xms2g
       -Xmx4g
       -XX:ReservedCodeCacheSize=512m
       -XX:+UseG1GC
       ```
-    * idea-test
+    * idea-work
       ```
       -Xms6g
       -Xmx6g
