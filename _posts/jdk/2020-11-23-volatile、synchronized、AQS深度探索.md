@@ -183,3 +183,14 @@ condition queue 的入队与出队都是在获取锁的逻辑中实现；释放�
         * 不公平: 不阻塞获取写锁的线程；对于获取读锁的线程，先判断 wait queue 的头部是否是正在等待写锁的线程
 
 
+PROPAGATE 的用处：
+
+> https://blog.csdn.net/tomakemyself/article/details/109499230
+> https://www.zhihu.com/question/295925198?sort=created
+> https://blog.csdn.net/viscu/article/details/86554128
+> https://blog.csdn.net/weixin_34055910/article/details/91454141
+
+写 active；head ——> 读 ——> 读 ——> 写 ——> 读
+
+当写锁释放时，会有几个读锁可以获取到
+
