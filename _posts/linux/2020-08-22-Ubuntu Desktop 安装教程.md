@@ -134,12 +134,12 @@ tags:       Linux Ubuntu
   * 解压到 ~/application/idea-${version}/idea-work; ~/application/idea-${version}/idea-test; ~/application/idea-${version}/idea-view
   * 修改 idea64.vmoptions
     * idea-work
-        ```
-        -Xms2g
-        -Xmx4g
-        -XX:ReservedCodeCacheSize=512m
-        -XX:+UseG1GC
-        ```
+      ```
+      -Xms2g
+      -Xmx4g
+      -XX:ReservedCodeCacheSize=512m
+      -XX:+UseG1GC
+      ```
     * idea-test
       ```
       -Xms6g
@@ -149,11 +149,12 @@ tags:       Linux Ubuntu
       ```
   * 修改 idea.properties
     ```properties
-    idea.config.custom.path=${user.home}/.idea-2020.2.4/idea-work
+    idea.config.share.path=${user.home}/.idea-2020.2.4
+    idea.config.custom.path=${idea.config.share.path}/idea-work
     idea.config.path=${idea.config.custom.path}/config
     idea.system.path=${idea.config.custom.path}/system
     idea.log.path=${idea.system.path}/log
-    idea.plugins.path=${user.home}/.idea-plugins/plugins
+    idea.plugins.path=${idea.config.share.path}/plugins
      
     idea.max.intellisense.filesize=512000
     ```

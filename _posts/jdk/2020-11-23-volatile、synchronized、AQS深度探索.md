@@ -164,6 +164,9 @@ public class ReorderTest {
 
 算法
 
+condition queue 的入队与出队都是在获取锁的逻辑中实现；释放锁的逻辑只负责 unpack condition queue 的头节点
+从 condition queue 中唤醒的线程获取共享锁时，会有向后传播的行为
+
 * Condition
     * await: 将当前线程添加到 condition queue 尾部
     * signal: 将 condition queue 头部的线程移动到 wait queue 的尾部
