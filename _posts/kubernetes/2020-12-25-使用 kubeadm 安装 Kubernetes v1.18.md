@@ -55,6 +55,11 @@ node 节点上需要安装
   # 注释/etc/fstab关于swap的配置
   echo vm.swappiness=0 >> /etc/sysctl.conf
 
+  # 设置 hosts
+  192.168.31.89  k8s-master
+  192.168.31.129 k8s-node01
+  192.168.31.85  k8s-node02
+  
   # 重启
   reboot
   ```  
@@ -98,8 +103,11 @@ node 节点上需要安装
       # 查看 docker-ce 的版本
       yum list docker-ce --showduplicates | sort -r
       
-      # 安装 docker 3:19.03.4-3.el7
-      yum install docker-ce-3:19.03.4-3.el7 docker-ce-cli-3:19.03.4-3.el7 containerd.io
+      # 查看 containerd.io 版本
+      yum list containerd.io --showduplicates | sort -r
+      
+      # 安装 docker 19.03.4-3.el7 和 containerd.io 1.3.9-3.1.el7
+      yum install docker-ce-19.03.4-3.el7 docker-ce-cli-19.03.4-3.el7 containerd.io-1.3.9-3.1.el7
       # 配置 docker
       mkdir /etc/docker
       cat > /etc/docker/daemon.json <<EOF
@@ -141,11 +149,11 @@ node 节点上需要安装
       sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
       
       # 查看 kubelet 的版本
-      yum list --showduplicates | grep kubelet
+      yum list kubelet --showduplicates | sort -r
       # 查看 kubeadm 的版本
-      yum list --showduplicates | grep kubeadm
+      yum list kubeadm --showduplicates | sort -r
       # 查看 kubectl 的版本
-      yum list --showduplicates | grep kubectl
+      yum list kubectl --showduplicates | sort -r
       
       # 安装 1.18.14-0 版本
       yum install -y \
@@ -194,13 +202,11 @@ mkdir -p $HOME/.kube
 cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 chown $(id -u):$(id -g) $HOME/.kube/config
 
-# 安装 CNI（容器网络接口）选择 Calico ==>  https://docs.projectcalico.org/getting-started/kubernetes/quickstart
+# 安装 CNI（容器网络接口）选择 Calico ==>  https://docs.projectcalico.org/getting-started/kubernetes/self-managed-onprem/onpremises
 mkdir -p "k8s/calico"
-wget -P k8s/calico/ https://docs.projectcalico.org/manifests/tigera-operator.yaml
-wget -P k8s/calico/ https://docs.projectcalico.org/manifests/custom-resources.yaml
-# 将之前设置在 k8s/kubeadm-init.yaml 中的 serviceSubnet 设置到 k8s/calico/custom-resources.yaml 中的 cidr
-kubectl create -f k8s/calico/tigera-operator.yaml
-kubectl create -f k8s/calico/custom-resources.yaml
+wget -P k8s/calico/ https://docs.projectcalico.org/manifests/calico.yaml
+# 将之前设置在 k8s/kubeadm-init.yaml 中的 serviceSubnet 设置到 k8s/calico/calico.yaml 中的 192.168.0.0/16
+kubectl apply -f k8s/calico/calico.yaml
 ```
 
 # Node 节点需要的环境
