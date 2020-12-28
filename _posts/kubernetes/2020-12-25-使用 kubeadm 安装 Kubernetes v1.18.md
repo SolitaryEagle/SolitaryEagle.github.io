@@ -39,6 +39,7 @@ node 节点上需要安装
 # 共同基础环境准备（所有节点都要安装）
 
 * 基础环境准备
+
 ```text
 # 切换 yum repos 为 阿里云镜像
 yum install -y wget curl net-tools vim bash-completion
@@ -68,6 +69,7 @@ reboot
     * 检查 Mac 地址: ifconfig 
     * 检查 product_uuid: cat /sys/class/dmi/id/product_uuid
     * [安装 runtime（选择 docker; 只安装 containerd 在拉取镜像时会失败）](https://v1-18.docs.kubernetes.io/zh/docs/setup/production-environment/container-runtimes/#containerd)
+  
 ```text
 # 安装 docker 前的环境准备
 cat > /etc/modules-load.d/containerd.conf <<EOF
@@ -224,7 +226,7 @@ cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 chown $(id -u):$(id -g) $HOME/.kube/config
 
 # 安装 CNI（容器网络接口）选择 Calico ==>  https://docs.projectcalico.org/getting-started/kubernetes/self-managed-onprem/onpremises
-mkdir -p "k8s/calico"
+mkdir -p k8s/calico
 wget -P k8s/calico/ https://docs.projectcalico.org/manifests/calico.yaml
 # 将之前设置在 k8s/kubeadm-init.yaml 中的 serviceSubnet 设置到 k8s/calico/calico.yaml 中的 192.168.0.0/16
 kubectl apply -f k8s/calico/calico.yaml
