@@ -39,7 +39,7 @@ node 节点上需要安装
 # 共同基础环境准备（所有节点都要安装）
 
 * 基础环境准备
-  ```shell
+  ```text
   # 切换 yum repos 为 阿里云镜像
   yum install -y wget curl net-tools vim bash-completion
   mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
@@ -68,7 +68,7 @@ node 节点上需要安装
     * 检查 Mac 地址: ifconfig 
     * 检查 product_uuid: cat /sys/class/dmi/id/product_uuid
     * [安装 runtime（选择 docker; 只安装 containerd 在拉取镜像时会失败）](https://v1-18.docs.kubernetes.io/zh/docs/setup/production-environment/container-runtimes/#containerd)
-      ```shell
+      ```text
       # 安装 docker 前的环境准备
       cat > /etc/modules-load.d/containerd.conf <<EOF
       overlay
@@ -175,7 +175,7 @@ node 节点上需要安装
 
 # Master 节点需要的环境
 
-```shell
+```text
 # 生成初始化文件
 mkdir k8s
 kubeadm config print init-defaults > k8s/kubeadm-init.yaml
