@@ -9,6 +9,20 @@ catalog: 	true
 tags:       Kubernetes
 ---
 
+> * [阿里云 CentOS-7 yum repos 镜像仓库](https://developer.aliyun.com/mirror/centos?spm=a2c6h.13651102.0.0.4d781b111UZGaU)
+> * [阿里云 docker repos 镜像仓库](https://developer.aliyun.com/mirror/docker-ce?spm=a2c6h.13651102.0.0.4d781b111UZGaU)
+> * [阿里云 docker 公共镜像仓库](https://cr.console.aliyun.com/cn-hangzhou/instances/images)
+> * [阿里云 docker 镜像加速器](https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors)
+> * [阿里云 k8s repos 镜像仓库](https://developer.aliyun.com/mirror/kubernetes?spm=a2c6h.13651102.0.0.4d781b111UZGaU)
+> * [阿里云 CentOS-7-x86_64-Minimal-2009.iso 镜像下载](https://mirrors.aliyun.com/centos/7/isos/x86_64/)
+> * [安装 kubeadm](https://v1-18.docs.kubernetes.io/zh/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)
+> * [CRI（容器运行时接口）docker](https://v1-18.docs.kubernetes.io/zh/docs/setup/production-environment/container-runtimes/#docker)
+> * [CNI（容器网络接口）calico](https://docs.projectcalico.org/getting-started/kubernetes/self-managed-onprem/onpremises)
+> * [安装 docker 引擎官网](https://docs.docker.com/engine/install/centos/)
+> * [安装并配置 kubectl](https://v1-18.docs.kubernetes.io/zh/docs/tasks/tools/install-kubectl/)
+> * [关闭交换分区](https://blog.csdn.net/yefun/article/details/102772368)
+> * [使用 kubeadm 部署高可用集群](https://blog.csdn.net/Jmilk/article/details/111461704)
+
 cluster 节点上需要安装
 * CRI（容器运行时接口）
 * kubeadm 
@@ -20,7 +34,6 @@ node 节点上需要安装
 * CRI（容器运行时接口）
 * kubeadm
 * kubelet
-
 
 # 基础设施准备
 
@@ -68,7 +81,7 @@ reboot
 * [安装 kubeadm](https://v1-18.docs.kubernetes.io/zh/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)      
     * 检查 Mac 地址: ifconfig 
     * 检查 product_uuid: cat /sys/class/dmi/id/product_uuid
-    * [安装 runtime（选择 docker; 只安装 containerd 在拉取镜像时会失败）](https://v1-18.docs.kubernetes.io/zh/docs/setup/production-environment/container-runtimes/#containerd)
+    * [安装 runtime（选择 docker; 只安装 containerd 在拉取镜像时会失败）](https://v1-18.docs.kubernetes.io/zh/docs/setup/production-environment/container-runtimes/#docker)
   
 ```text
 # 安装 docker 前的环境准备
@@ -153,7 +166,8 @@ baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
 enabled=1
 gpgcheck=1
 repo_gpgcheck=1
-gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg\
+ https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 EOF
 
 ## 阿里云镜像仓库
@@ -164,7 +178,8 @@ baseurl=http://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64
 enabled=1
 gpgcheck=0
 repo_gpgcheck=0
-gpgkey=http://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg http://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+gpgkey=http://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg\
+ http://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
 EOF
 
 # 将 SELinux 设置为 permissive 模式（相当于将其禁用）
@@ -179,11 +194,19 @@ yum list kubeadm --showduplicates | sort -r
 yum list kubectl --showduplicates | sort -r
 
 # 安装 1.18.14-0 版本
+## master 上安装
 yum install -y \
   kubelet-1.18.14-0 \
   kubeadm-1.18.14-0 \
   kubectl-1.18.14-0 \
   --disableexcludes=kubernetes
+
+## node 上安装  
+yum install -y \
+  kubelet-1.18.14-0 \
+  kubeadm-1.18.14-0 \
+  --disableexcludes=kubernetes
+  
 systemctl enable --now kubelet
 # 配置 kubectl 自动补全
 echo "source <(kubectl completion bash)" >> ~/.bashrc
@@ -218,17 +241,20 @@ kubeadm init --config k8s/kubeadm-init.yaml
 cat > ~/k8s/kubeadm-join.sh <<EOF
 #!/bin/bash
 kubeadm join 192.168.220.128:6443 --token abcdef.0123456789abcdef \
-  --discovery-token-ca-cert-hash sha256:3efda1d94742d2a7c9887ec4b389f557fab8665271f03be373ea3a3b9ff3de7b
+  --discovery-token-ca-cert-hash\
+ sha256:3efda1d94742d2a7c9887ec4b389f557fab8665271f03be373ea3a3b9ff3de7b
 EOF
 # 配置环境, 让当前用户可以执行kubectl命令
 mkdir -p $HOME/.kube
 cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 chown $(id -u):$(id -g) $HOME/.kube/config
 
-# 安装 CNI（容器网络接口）选择 Calico ==>  https://docs.projectcalico.org/getting-started/kubernetes/self-managed-onprem/onpremises
+# 安装 CNI（容器网络接口）选择 Calico ==>  
+# https://docs.projectcalico.org/getting-started/kubernetes/self-managed-onprem/onpremises
 mkdir -p k8s/calico
 wget -P k8s/calico/ https://docs.projectcalico.org/manifests/calico.yaml
-# 将之前设置在 k8s/kubeadm-init.yaml 中的 serviceSubnet 设置到 k8s/calico/calico.yaml 中的 192.168.0.0/16
+# 将之前设置在 k8s/kubeadm-init.yaml 中的 serviceSubnet 替换
+# k8s/calico/calico.yaml 中的 192.168.0.0/16
 kubectl apply -f k8s/calico/calico.yaml
 ```
 
