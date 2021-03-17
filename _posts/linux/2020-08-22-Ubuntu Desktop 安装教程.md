@@ -135,7 +135,7 @@ tags:       Linux Ubuntu
   * 修改 idea64.vmoptions
     * idea-test
       ```
-      -Xms2g
+      -Xms4g
       -Xmx4g
       -XX:ReservedCodeCacheSize=512m
       -XX:+UseG1GC
@@ -149,7 +149,7 @@ tags:       Linux Ubuntu
       ```
   * 修改 idea.properties
     ```properties
-    idea.config.share.path=${user.home}/.idea-2020.2.4
+    idea.config.share.path=${user.home}/.idea-2020.3.3
     idea.config.custom.path=${idea.config.share.path}/idea-work
     idea.config.path=${idea.config.custom.path}/config
     idea.system.path=${idea.config.custom.path}/system
@@ -175,7 +175,7 @@ tags:       Linux Ubuntu
     * .ignore
     * Alibaba Java Coding Guidelines
     * codehelper.generator
-    * json format
+    * Codota
     * Lombok
     * Maven Helper
     * Rainbow Brackets
